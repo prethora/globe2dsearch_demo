@@ -1,0 +1,80 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Playground</title><style>#loading
+      {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+        background-color: #e1e1e1;
+      }
+
+      #loading .dots
+      {
+        --color-on: #b9b9b9;
+        --color-off: #d3d3d3;
+        --width: 124px;        
+        --height: 25px;
+        position: absolute;
+        width: var(--width);
+        height: var(--height);
+        /* background-color: #666; */
+        left: calc(50% - var(--width) / 2);
+        top: calc(50% - var(--height) / 2);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      #loading .dot
+      {
+        width: var(--height);
+        height: var(--height);
+        background-color: var(--color-off);
+        transition: background-color 0.5s;
+      }
+
+      #loading .dot.on
+      {
+        background-color: var(--color-on);
+      }</style><script>function setDotOn(index)
+        {            
+            for(let i=0;i<3;i++)
+            {
+                const elem = document.querySelector(`#loading .dot.dot${i}`);
+                if (elem)
+                {
+                    if (i===index)
+                    {
+                        elem.classList.add("on");
+                    }
+                    else
+                    {
+                        elem.classList.remove("on");
+                    }
+                }
+            }
+        }
+
+        function startLoadingAnimation()
+        {
+            let dotCount = 3;
+            let pnt = 0;
+            const genTransitionEndHandler = (index) => () => 
+            {
+                if (index===pnt)
+                {
+                    pnt = (pnt+1)%dotCount;
+                    setDotOn(pnt);
+                }
+            };
+            document.querySelectorAll(`#loading .dot`).forEach((elem,index) => 
+            {
+                elem.addEventListener("transitionend",genTransitionEndHandler(index));
+            });
+            setDotOn(pnt);
+        }
+
+        window.addEventListener("load",() => 
+        {
+            startLoadingAnimation();
+        });</script><script defer="defer" src="main.bundle.js"></script></head><body><div id="loading"><div class="dots"><div class="dot dot0"></div><div class="dot dot1"></div><div class="dot dot2"></div></div></div><div id="root"></div></body></html>
